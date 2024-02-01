@@ -1,21 +1,15 @@
 import React from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
 
-export default function HomeScreen(props) {
+export default function DetailScreen(props) {
   const { navigation } = props;
   return (
     <View style={styles.container}>
-      <Text>HomeScreen</Text>
+      <Text>DetailScreen</Text>
       <Button
-        title='Detailに遷移する'
+        title='Homeに遷移する'
         onPress={() => {
-          navigation.navigate('Detail');
-        }}
-      />
-      <Button
-        title='StackMemoに遷移する'
-        onPress={() => {
-          navigation.navigate('StackMemo');
+          navigation.navigate('Home');
         }}
       />
     </View>

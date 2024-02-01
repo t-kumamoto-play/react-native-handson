@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
 import DetailScreen from '../screens/DetailScreen';
+import StackMemo from '../screens/StackMemo';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,10 @@ export default function StackScreen() {
         <Stack.Screen
           name="Detail"
           component={DetailScreen}
+        />
+        <Stack.Screen
+          name="StackMemo"
+          component={StackMemo}
         />
       </Stack.Navigator>
     </NavigationContainer>
