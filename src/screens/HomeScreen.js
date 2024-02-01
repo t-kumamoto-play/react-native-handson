@@ -12,6 +12,12 @@ export default function HomeScreen(props) {
           navigation.navigate('Detail');
         }}
       />
+      <Button
+        title='StackMemoに遷移する'
+        onPress={() => {
+          navigation.navigate('StackMemo');
+        }}
+      />
     </View>
   );
 }
