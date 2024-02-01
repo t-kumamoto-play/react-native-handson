@@ -1,44 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Button, TextInput, SafeAreaView, Pressable, FlatList, Item } from 'react-native';
-import _map from 'lodash/map';
-
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Button, TextInput, FlatList } from 'react-native';
+import _isEmpty from 'lodash/isEmpty';
 
 export default function StackMemo(props) {
   const { navigation } = props;
-  const [inputText, onChangeText] = useState("");
+  const [textValue, onChangeText] = useState("");
   const [textList, setTextList] = useState([]);
   const [id, setID] = useState(1);
 
-  console.log({textList})
-
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Text>StackMemo</Text>
-
-      <View style={styles.input_container}>
+      <View style={styles.textInputContainer}>
         <TextInput
-          style={{ padding: 5,  width: '50%', height: 30, borderColor: 'gray', borderWidth: 1, borderRadius: 10 }}
+          style={styles.textInput}
+          value={textValue}
           onChangeText={(text) => onChangeText(text)}
-          value={inputText}
         />
         <Button
-          style={{ margin: '10px' }}
           title="セット"
-          onPress={(e) => {
+          onPress={() => {
+            if (!textValue) return null;
+            const newList = textList;
+            newList.push(textValue);
+            setTextList(newList);
             onChangeText("");
-            setTextList((list) => {
-              console.log({list});
-              return [...list, { id: id, text: inputText}]
-            });
-            setID(id++);
+            setID(id + 1);
           }}
         />
       </View>
       <FlatList
-        style={{ maxHeight: 200, overflow: 'scroll' }}
         data={textList}
-        renderItem={({item}) => <Item text={item.text}/>}
-        keyExtractor={item => item.id}
+        renderItem={({ item }) => {
+          return (
+            <View>
+              <Text>{item}</Text>
+            </View>
+          );
+        }}
+        style={styles.flatListContainer}
       />
       <Button
         title='Homeに遷移する'
@@ -46,7 +46,7 @@ export default function StackMemo(props) {
           navigation.navigate('Home');
         }}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -54,13 +54,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  input_container: {
+  textInputContainer: {
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10
+    padding: 20
+  },
+  textInput: {
+    width: '50%',
+    height: '10px',
+    borderColor: '#000000',
+    borderWidth: 1,
+    marginEnd: 20,
+    padding: 5
+  },
+  flatListContainer: {
+    maxHeight: 200,
+    width: '100%',
+    borderColor: '#000000',
+    borderWidth: 1,
+    margin: 10
   }
 });
