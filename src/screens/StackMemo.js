@@ -1,13 +1,45 @@
-import React from 'react';
-import { StyleSheet, View, Text, Button, TextInput, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Button, TextInput, SafeAreaView, Pressable, FlatList, Item } from 'react-native';
+import _map from 'lodash/map';
+
 
 export default function StackMemo(props) {
   const { navigation } = props;
+  const [inputText, onChangeText] = useState("");
+  const [textList, setTextList] = useState([]);
+  const [id, setID] = useState(1);
+
+  console.log({textList})
+
   return (
     <SafeAreaView style={styles.container}>
       <Text>StackMemo</Text>
 
-      <TextInput style={styles.input}/>
+      <View style={styles.input_container}>
+        <TextInput
+          style={{ padding: 5,  width: '50%', height: 30, borderColor: 'gray', borderWidth: 1, borderRadius: 10 }}
+          onChangeText={(text) => onChangeText(text)}
+          value={inputText}
+        />
+        <Button
+          style={{ margin: '10px' }}
+          title="セット"
+          onPress={(e) => {
+            onChangeText("");
+            setTextList((list) => {
+              console.log({list});
+              return [...list, { id: id, text: inputText}]
+            });
+            setID(id++);
+          }}
+        />
+      </View>
+      <FlatList
+        style={{ maxHeight: 200, overflow: 'scroll' }}
+        data={textList}
+        renderItem={({item}) => <Item text={item.text}/>}
+        keyExtractor={item => item.id}
+      />
       <Button
         title='Homeに遷移する'
         onPress={() => {
@@ -24,13 +56,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  input: {
-    width: '95%',
-    height: 40,
-    borderWidth: 1,
-    padding: 10,
-    margin: 12,
-    borderRadius: 10,
-    borderColor: '#666666'
+  input_container: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10
   }
 });
